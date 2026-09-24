@@ -82,9 +82,9 @@ def main():
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             break
-        if servo.enabled and key in (ord("a"), 81):
+        elif servo.enabled and key in (ord("a"), 75):   # 75 = left arrow (Windows)
             servo.step(-args.servo_step)
-        elif servo.enabled and key in (ord("d"), 83):
+        elif servo.enabled and key in (ord("d"), 77):   # 77 = right arrow (Windows)
             servo.step(args.servo_step)
         elif servo.enabled and key == ord("c"):
             servo.center()

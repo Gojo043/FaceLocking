@@ -8,7 +8,7 @@ from typing import Optional
 import cv2
 import numpy as np
 
-from .align import align_face_5pt
+from .haar_5pt import align_face_5pt
 from .face_signals import FaceSignalExtractor
 from .recognize import (
     ArcFaceEmbedderONNX,
@@ -257,8 +257,8 @@ def main():
             h, w = view.shape[:2]
             dz = tracker.dead_zone
             cv2.rectangle(view,
-                          (int(w * (0.5 - dz / 2)), int(h * (0.5 - dz / 2))),
-                          (int(w * (0.5 + dz / 2)), int(h * (0.5 + dz / 2))),
+                          (int(w * (0.5 - dz)), int(h * (0.5 - dz))),
+                          (int(w * (0.5 + dz)), int(h * (0.5 + dz))),
                           (120, 120, 120), 1)
 
             cv2.imshow("Locked Face Tracking", view)

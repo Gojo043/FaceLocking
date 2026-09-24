@@ -180,7 +180,8 @@ def main():
                     cv2.circle(vis, (int(x), int(y)), 3, (0, 255, 0), -1)
 
                 aligned, _ = align_face_5pt(frame, f.kps, out_size=(112, 112))
-                cv2.imshow(cfg.window_aligned, aligned)
+                if aligned is not None:
+                    cv2.imshow(cfg.window_aligned, aligned)
             else:
                 cv2.imshow(cfg.window_aligned, np.zeros((112, 112, 3), dtype=np.uint8))
 

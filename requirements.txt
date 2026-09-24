@@ -1,7 +1,7 @@
-opencv-python
-numpy
-onnxruntime
-scipy
-tqdm
+opencv-python>=4.8,<5
+numpy>=1.24,<2
+onnxruntime>=1.17,<2
+scipy>=1.11,<2
+tqdm>=4.66,<5
 mediapipe==0.10.21
-paho-mqtt
+paho-mqtt>=1.6,<3

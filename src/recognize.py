@@ -471,6 +471,13 @@ def main():
                 face_pause_started = None
                 candidate_name = None
                 confirmed_name = None
+            else:
+                # No faces at all — start counting toward giving up the lock
+                if (now - last_seen_target) >= args.servo_lost_after * 4:
+                    locked_name = None
+                    confirmed_name = None
+                    candidate_name = None
+                    face_pause_started = None
 
         if servo_tracking and servo.enabled:
             if target_visible and track_x is not None:
@@ -491,7 +498,7 @@ def main():
                         servo.send_angle(next_angle, force=True)
                         last_scan = now
 
-        header = f"IDs={len(matcher._names)} thr(dist)={matcher.dist_thresh:.2f}"
+        header = f"IDs={len(matcher.db)} thr(dist)={matcher.dist_thresh:.2f}"
         if fps is not None:
             header += f" fps={fps:.1f}"
         cv2.putText(vis, header, (10, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
@@ -523,17 +530,17 @@ def main():
         elif servo.enabled and key == ord("t"):
             servo_tracking = not servo_tracking
             print(f"[servo] tracking: {'ON' if servo_tracking else 'OFF'}")
-        elif servo.enabled and key in (81,):
+        elif servo.enabled and key in (75,):   # 75 = left arrow (Windows)
             servo_tracking = False
             servo.step(-args.servo_step)
-        elif servo.enabled and key in (83,):
+        elif servo.enabled and key in (77,):   # 77 = right arrow (Windows)
             servo_tracking = False
             servo.step(args.servo_step)
         elif servo.enabled and key == ord("c"):
             servo.center()
         elif key == ord("r"):
             matcher.reload_from(db_path)
-            print(f"[recognize] reloaded DB: {len(matcher._names)} identities")
+            print(f"[recognize] reloaded DB: {len(matcher.db)} identities")
         elif key in (ord("+"), ord("=")):
             matcher.dist_thresh = float(min(1.20, matcher.dist_thresh + 0.01))
             print(f"[recognize] thr(dist)={matcher.dist_thresh:.2f} (sim~{1.0-matcher.dist_thresh:.2f})")

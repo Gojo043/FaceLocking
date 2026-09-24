@@ -175,6 +175,8 @@ def main():
                 cv2.circle(vis, (x, y), 3, (0, 255, 0), -1)
 
             aligned, _ = align_face_5pt(frame, f.kps, out_size=(112, 112))
+            if aligned is None:
+                continue
             res = emb_model.embed(aligned)
 
             info.append(f"embedding dim: {res.dim}")
